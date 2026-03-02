@@ -1,4 +1,4 @@
-# LunchTech - TechChallenge FIAP
+# TechChallenge - fase 3 -FIAP
 
 ## Sobre o Projeto
 O Tech Challenge é o projeto da fase que englobará os conhecimentos obtidos em todas as disciplinas da fase. Esta é uma atividade que foi desenvolvida em grupo.
