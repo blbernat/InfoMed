@@ -1,13 +1,13 @@
-package com.fiap.techchallenge;
+package com.fiap.infomed;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NotificationApplication {
+public class MainApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(NotificationApplication.class, args);
+        SpringApplication.run(MainApplication.class, args);
     }
 
 }

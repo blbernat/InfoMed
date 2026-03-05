@@ -1,9 +1,9 @@
-# TechChallenge - fase 3 -FIAP
+# InfoMed
 
 ## Sobre o Projeto
 O Tech Challenge é o projeto da fase que englobará os conhecimentos obtidos em todas as disciplinas da fase. Esta é uma atividade que foi desenvolvida em grupo.
 O projeto consiste em um sistema simplificado e modular, com foco em segurança e comunicação assíncrona, garantindo que o sistema seja escalável, seguro, com boas práticas de autenticação, autorização e comunicação entre serviços.
-A solução permite o agendamento consultas, o gerenciamento do histórico de pacientes e o envio de lembretes automáticos para garantir a presença dos pacientes nas consultas.
+O InfoMed permite o agendamento consultas, o gerenciamento do histórico de pacientes e o envio de lembretes automáticos para garantir a presença dos pacientes nas consultas.
  
 
 ## Tecnologias Utilizadas
@@ -31,12 +31,12 @@ A solução permite o agendamento consultas, o gerenciamento do histórico de pa
 
 ### Docker
 * #### Para utilizar a aplicação via docker é necessário gerar o `.jar` da aplicação. Para isso faça os seguintes passos:
-1. Acessar o diretório `TechChallenge - fase 3/docker`
+1. Acessar o diretório `InfoMed/docker`
 2. Rodar o comando `docker-compose up` (caso queira acompanhar os logs) ou `docker-compose up -d`
 3. A aplicação estará rodando na porta http://localhost:8080
 
 * ####  Caso queira rodar a aplicação local e utilizar o banco via docker:
-1. Acessar o diretório `TechChallenge - fase 3/docker`
+1. Acessar o diretório `InfoMed/docker`
 2. Rodar o comando `docker compose -f docker-compose-mysql.yml up` (caso queira acompanhar os logs) ou `docker compose -f docker-compose-mysql.yml up -d`
 3. Iniciar a aplicação manualmente ou via IDE
 
@@ -47,7 +47,7 @@ A solução permite o agendamento consultas, o gerenciamento do histórico de pa
 ## Exemplos de Uso
 
 Para verificar se a aplicação está rodando corretamente e ter acesso aos endpoints, utilize as Collections no Postman, conforme os seguintes passos:
-1. Salve num arquivo local o conteúdo do arquivo `collections/TechChallange.postman_collection.json`
+1. Salve num arquivo local o conteúdo do arquivo `collections/Infomed.postman_collection.json`
 2. Abra o Postman via desktop ou pela web (https://www.postman.com/)
 3. Na aba "Collections", clique na opção "Import" e selecione o arquivo `.json` salvo no primeiro passo
 4. Cada endpoint possui testes válidos e inválidos que já estão prontos para serem executados!

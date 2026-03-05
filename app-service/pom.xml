@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.fiap.techchallenge</groupId>
-        <artifactId>TechChallenge-fase3</artifactId>
+        <groupId>com.fiap.infomed</groupId>
+        <artifactId>InfoMed</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -125,7 +125,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.fiap.techchallenge.MainApplication</mainClass>
+                    <mainClass>com.fiap.infomed.MainApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
