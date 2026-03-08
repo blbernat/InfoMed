@@ -6,35 +6,29 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="consulta")
+@Table(name="historico_consultas")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConsultaEntity {
+public class HistoricoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status;
+    private String diagnostico;
 
-    private String observacao;
-
-    @Column(name= "data_consulta")
-    private LocalDateTime dataConsulta;
-
-    @Column(name= "data_criacao")
-    private LocalDateTime dataCriacao;
+    private String tratamento;
 
     @Column(name= "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
     @ManyToOne
-    @JoinColumn(
-            name= "usuario_id",
-            nullable = false)
-    private UsuarioEntity usuario;
+    private UsuarioEntity paciente;
+
+    @ManyToOne
+    private UsuarioEntity medico;
 
 }

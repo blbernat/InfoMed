@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package historico;
+
+option java_multiple_files = true;
+option java_package = "com.fiap.infomed.grpc";
+
+service HistoricoService {
+
+  rpc GetPatientAppointments (PatientRequest)
+      returns (AppointmentListResponse);
+
+  rpc GetFutureAppointments (PatientRequest)
+      returns (AppointmentListResponse);
+
+}
+
+message PatientRequest {
+  int64 patientId = 1;
+}
+
+message Appointment {
+
+  int64 id = 1;
+  string doctorName = 2;
+  string date = 3;
+  string status = 4;
+
+}
+
+message AppointmentListResponse {
+
+  repeated Appointment appointments = 1;
+
+}

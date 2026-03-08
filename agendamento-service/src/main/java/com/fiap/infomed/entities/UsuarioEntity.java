@@ -36,28 +36,10 @@ public class UsuarioEntity {
     @Column(name= "data_nascimento")
     private LocalDateTime dataNascimento;
 
-    @Column(name= "data_criacao")
-    private LocalDateTime dataCriacao;
-
     @Column(name= "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-    @ManyToOne
-    @JoinColumn(
-            name= "tipo_usuario_id",
-            nullable = false)
+    @Enumerated(EnumType.STRING)
     private TipoUsuarioEntity tipoUsuario;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-
-    @OneToMany(
-            mappedBy = "usuario",
-            fetch = FetchType.LAZY)
-    private List<ConsultaEntity> consultas;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(
-            mappedBy = "usuario",
-            fetch = FetchType.LAZY)
-    private List<NotificacaoEntity> notificacoes;
 
 }
