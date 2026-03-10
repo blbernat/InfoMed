@@ -10,7 +10,7 @@ O InfoMed permite o agendamento consultas, o gerenciamento do histórico de paci
 - Java
 - Spring Boot
 - RabbitMQ
-- gRPC
+- GraphQL
 - Maven
 - MySQL
 - Docker e Docker Compose
