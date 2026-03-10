@@ -1,0 +1,42 @@
+schema {
+    query: Query
+}
+
+type Query {
+    patientAppointments(patientId: ID!): [Consulta]
+    futureAppointments(patientId: ID!): [Consulta]
+    patientHistory(patientId: ID!): [Historic]
+}
+
+type Consulta {
+    id: ID!
+    status: String!
+    observacao: String
+    dataConsulta: String!
+    paciente: Usuario!
+    medico: Usuario!
+}
+
+type Historico {
+    id: ID!
+    diagnostico: String
+    tratamento: String
+    dataAtualizacao: String!
+    paciente: Usuario!
+    medico: Usuario!
+}
+
+type Usuario {
+    id: ID!
+    nome: String!
+    login: String
+    email: String
+    cpf: String
+    tipoUsuario: TipoUsuario!
+}
+
+enum TipoUsuario{
+    MEDICO
+    ENFERMEIRO
+    PACIENTE
+}
