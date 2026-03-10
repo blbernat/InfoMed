@@ -30,12 +30,6 @@ public class UsuarioEntity {
     @Column(unique = true)
     private String email;
 
-    @Column(unique = true)
-    private String cpf;
-
-    @Column(name= "data_nascimento")
-    private LocalDateTime dataNascimento;
-
     @Column(name= "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
