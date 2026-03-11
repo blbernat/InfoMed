@@ -31,7 +31,6 @@ type Usuario {
     nome: String!
     login: String
     email: String
-    cpf: String
     tipoUsuario: TipoUsuario!
 }
 

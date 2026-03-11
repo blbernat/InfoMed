@@ -1,7 +1,8 @@
 package com.fiap.infomed.graphql;
 
-import com.fiap.infomed.entities.ConsultaEntity;
-import com.fiap.infomed.entities.HistoricoEntity;
+import com.fiap.infomed.dto.ConsultaResponseDTO;
+import com.fiap.infomed.dto.HistoricalResponseDTO;
+import com.fiap.infomed.presenter.HistoricoPresenter;
 import com.fiap.infomed.repository.AgendamentoRepository;
 import com.fiap.infomed.repository.HistoricRepository;
 import com.fiap.infomed.repository.UsuarioRepository;
@@ -17,35 +18,37 @@ import java.util.stream.Collectors;
 public class HistoricoGraphQLController {
     private final AgendamentoRepository agendamentoRepository;
     private final HistoricRepository historicRepository;
-    private final UsuarioRepository usuarioRepository;
 
     public HistoricoGraphQLController(AgendamentoRepository agendamentoRepository, HistoricRepository historicRepository, UsuarioRepository usuarioRepository) {
         this.agendamentoRepository = agendamentoRepository;
         this.historicRepository = historicRepository;
-        this.usuarioRepository = usuarioRepository;
     }
-//Depois substituir os entity's por DTO's
-//Alterar as querys para buscar os valores específicos
+
     @QueryMapping
-    public List<ConsultaEntity> patientAppointments (@Argument Long patientId) {
+    public List<ConsultaResponseDTO> patientAppointments (@Argument Long patientId) {
         return agendamentoRepository.findByPaciente(patientId)
                 .stream()
-                .filter(c -> c.getPaciente() != null && (patientId).equals(c.getPaciente().getId()))
+                .map(HistoricoPresenter::toConsultaDTO)
                 .collect(Collectors.toList());
     }
 
     @QueryMapping
-    public List<ConsultaEntity> futureAppointments(@Argument Long patientId) {
+    public List<ConsultaResponseDTO> futureAppointments(@Argument Long patientId) {
         LocalDateTime now = LocalDateTime.now();
-        return agendamentoRepository.findAll().stream()
-                .filter(c -> c.getPaciente() != null && (patientId).equals(c.getPaciente().getId()) && c.getDataConsulta().isAfter(now))
+        return agendamentoRepository.findByPaciente(patientId)
+                .stream()
+                .filter(c -> c.getPaciente() != null
+                        && (patientId).equals(c.getPaciente().getId())
+                        && c.getDataConsulta().isAfter(now))
+                .map(HistoricoPresenter::toConsultaDTO)
                 .collect(Collectors.toList());
     }
 
     @QueryMapping
-    public List<HistoricoEntity> patientHistory (@Argument Long patientId) {
-        return historicRepository.findAll().stream()
-                .filter(h -> h.getPaciente() != null && patientId.equals(h.getPaciente().getId()))
+    public List<HistoricalResponseDTO> patientHistory (@Argument Long patientId) {
+        return historicRepository.findByPaciente(patientId)
+                .stream()
+                .map(HistoricoPresenter::toHistoricalResponseDTO)
                 .collect(Collectors.toList());
     }
 }
