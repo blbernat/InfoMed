@@ -26,20 +26,18 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             return false;
         }
 
-        if (!targetType.equals("Patient")) { // Verifica se o tipo do alvo é "Patient"
+        if (!targetType.equals("Patient")) {
             return false;
         }
 
         Long patientId = (Long) targetId;
 
-        // Médicos e Enfermeiros podem acessar qualquer patientId
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             if (authority.getAuthority().equals("ROLE_MEDICO") || authority.getAuthority().equals("ROLE_ENFERMEIRO")) {
                 return true;
             }
         }
 
-        // Pacientes só podem acessar o próprio patientId
         if (authentication.getPrincipal() instanceof CustomUserDetails) {
             CustomUserDetails currentUser = (CustomUserDetails) authentication.getPrincipal();
             return currentUser.getPatientId() != null && currentUser.getPatientId().equals(patientId);

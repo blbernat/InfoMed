@@ -37,17 +37,15 @@ public class UsuarioService {
     }
 
     public void updateUsuario(UsuarioUpdateDTO usuarioDTO) {
-        UsuarioEntity usuario = usuarioRepository.findByLogin(usuarioDTO.login());
+        UsuarioEntity usuario = usuarioRepository.findByLogin(usuarioDTO.login())
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!"));
 
-        if (usuario == null) {
-            throw new EntityNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!");
-        }
-
-        UsuarioEntity usuarioByEmail = usuarioRepository.findByEmail(usuarioDTO.email());
-
-        if (usuarioByEmail != null && !usuarioByEmail.getLogin().equals(usuarioDTO.login())) {
-            throw new IllegalArgumentException("Esse e-mail já está sendo utilizado por outro usuário.");
-        }
+        usuarioRepository.findByEmail(usuarioDTO.email())
+                .filter(u -> !usuarioDTO.login().equals(u.getLogin()))
+                .ifPresent(u -> {
+                    throw new IllegalArgumentException("Esse e-mail já está sendo utilizado por outro usuário.");
+                });
 
         usuario.setNome(usuarioDTO.nome());
         usuario.setEmail(usuarioDTO.email());
@@ -58,10 +56,9 @@ public class UsuarioService {
     }
 
     public void deleteUsuario(String login) {
-        UsuarioEntity usuarioDelete = usuarioRepository.findByLogin(login);
-        if (usuarioDelete == null) {
-            throw new EntityNotFoundException("Usuário não encontrado!");
-        }
+        UsuarioEntity usuarioDelete = usuarioRepository.findByLogin(login)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Usuário não encontrado!"));
         usuarioRepository.delete(usuarioDelete);
     }
 
