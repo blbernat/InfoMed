@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AgendamentoRepository extends JpaRepository<ConsultaEntity, Long> {
-    List<ConsultaEntity> findByPaciente(Long patientId);
+    List<ConsultaEntity> findByPacienteId(Long patientId);
 }

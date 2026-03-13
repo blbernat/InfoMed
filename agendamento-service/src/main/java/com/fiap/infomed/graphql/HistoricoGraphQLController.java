@@ -38,7 +38,7 @@ public class HistoricoGraphQLController {
     @QueryMapping
     @PreAuthorize("hasPermission(#patientId, 'Patient', 'read')")
     public List<ConsultaResponseDTO> patientAppointments (@Argument Long patientId) {
-        return agendamentoRepository.findByPaciente(patientId)
+        return agendamentoRepository.findByPacienteId(patientId)
                 .stream()
                 .map(HistoricoPresenter::toConsultaDTO)
                 .collect(Collectors.toList());
@@ -48,7 +48,7 @@ public class HistoricoGraphQLController {
     @PreAuthorize("hasPermission(#patientId, 'Patient', 'read')")
     public List<ConsultaResponseDTO> futureAppointments(@Argument Long patientId) {
         LocalDateTime now = LocalDateTime.now();
-        return agendamentoRepository.findByPaciente(patientId)
+        return agendamentoRepository.findByPacienteId(patientId)
                 .stream()
                 .filter(c -> c.getPaciente() != null
                         && (patientId).equals(c.getPaciente().getId())
@@ -60,7 +60,7 @@ public class HistoricoGraphQLController {
     @QueryMapping
     @PreAuthorize("hasPermission(#patientId, 'Patient', 'read')")
     public List<HistoricalResponseDTO> patientHistory (@Argument Long patientId) {
-        return historicRepository.findByPaciente(patientId)
+        return historicRepository.findByPacienteId(patientId)
                 .stream()
                 .map(HistoricoPresenter::toHistoricalResponseDTO)
                 .collect(Collectors.toList());

@@ -1,23 +1,24 @@
 package com.fiap.infomed.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
 @Configuration
 @EnableMethodSecurity
-public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
+public class MethodSecurityConfig {
 
     private final CustomPermissionEvaluator permissionEvaluator;
 
-    public MethodSecurityConfig(CustomPermissionEvaluator permissionEvaluator) {
+    public MethodSecurityConfig(@Lazy CustomPermissionEvaluator permissionEvaluator) {
         this.permissionEvaluator = permissionEvaluator;
     }
 
-    @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
+    @Bean
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
         DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
         expressionHandler.setPermissionEvaluator(permissionEvaluator);
         return expressionHandler;

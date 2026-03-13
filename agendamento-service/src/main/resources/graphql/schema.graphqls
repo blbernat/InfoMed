@@ -5,7 +5,7 @@ schema {
 type Query {
     patientAppointments(patientId: ID!): [Consulta]
     futureAppointments(patientId: ID!): [Consulta]
-    patientHistory(patientId: ID!): [Historic]
+    patientHistory(patientId: ID!): [Historico]
 }
 
 type Consulta {
