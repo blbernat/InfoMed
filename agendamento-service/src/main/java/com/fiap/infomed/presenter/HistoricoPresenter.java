@@ -17,7 +17,13 @@ public class HistoricoPresenter {
     }
 
     private static MedicoDTO toMedicoDTO(UsuarioEntity usuarioEntity) {
-        return new MedicoDTO(usuarioEntity.getNome(), usuarioEntity.getTipoUsuario().toString());
+        return new MedicoDTO(
+                usuarioEntity.getId(),
+                usuarioEntity.getNome(),
+                usuarioEntity.getLogin(),
+                usuarioEntity.getEmail(),
+                usuarioEntity.getTipoUsuario().toString()
+        );
     }
 
     public static HistoricalResponseDTO toHistoricalResponseDTO (HistoricoEntity entity) {

@@ -8,6 +8,7 @@ import com.fiap.infomed.repository.HistoricRepository;
 import com.fiap.infomed.repository.UsuarioRepository;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class HistoricoGraphQLController {
     }
 
     @QueryMapping
+    @PreAuthorize("hasPermission(#patientId, 'Patient', 'read')")
     public List<ConsultaResponseDTO> patientAppointments (@Argument Long patientId) {
         return agendamentoRepository.findByPaciente(patientId)
                 .stream()
@@ -33,6 +35,7 @@ public class HistoricoGraphQLController {
     }
 
     @QueryMapping
+    @PreAuthorize("hasPermission(#patientId, 'Patient', 'read')")
     public List<ConsultaResponseDTO> futureAppointments(@Argument Long patientId) {
         LocalDateTime now = LocalDateTime.now();
         return agendamentoRepository.findByPaciente(patientId)
@@ -45,6 +48,7 @@ public class HistoricoGraphQLController {
     }
 
     @QueryMapping
+    @PreAuthorize("hasPermission(#patientId, 'Patient', 'read')")
     public List<HistoricalResponseDTO> patientHistory (@Argument Long patientId) {
         return historicRepository.findByPaciente(patientId)
                 .stream()

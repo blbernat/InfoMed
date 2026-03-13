@@ -6,6 +6,7 @@ import com.fiap.infomed.dto.UsuarioUpdateDTO;
 import com.fiap.infomed.entities.UsuarioEntity;
 import com.fiap.infomed.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,9 +16,11 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void saveUsuario(UsuarioCreateDTO usuarioDTO) {
@@ -26,7 +29,7 @@ public class UsuarioService {
         usuario.setNome(usuarioDTO.nome());
         usuario.setEmail(usuarioDTO.email());
         usuario.setLogin(usuarioDTO.login());
-        usuario.setSenha(usuarioDTO.senha());
+        usuario.setSenha(passwordEncoder.encode(usuarioDTO.senha())); // Encode the password
         usuario.setTipoUsuario(usuarioDTO.tipoUsuario());
         usuario.setDataAtualizacao(LocalDateTime.now());
 
@@ -34,37 +37,32 @@ public class UsuarioService {
     }
 
     public void updateUsuario(UsuarioUpdateDTO usuarioDTO) {
-        try {
-            UsuarioEntity usuario = usuarioRepository.findByLogin(usuarioDTO.login());
+        UsuarioEntity usuario = usuarioRepository.findByLogin(usuarioDTO.login());
 
-            if (usuario == null) {
-                throw new EntityNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!");
-            }
-
-            UsuarioEntity usuarioByEmail = usuarioRepository.findByEmail(usuarioDTO.email());
-
-            if (!usuarioByEmail.getLogin().equals(usuarioDTO.login())) {
-                throw new RuntimeException("Esse e-mail já está sendo utilizado por outro usuário.");
-            }
-
-            usuario.setNome(usuarioDTO.nome());
-            usuario.setEmail(usuarioDTO.email());
-            usuario.setTipoUsuario(usuarioDTO.tipoUsuario());
-            usuario.setDataAtualizacao(LocalDateTime.now());
-
-            usuarioRepository.save(usuario);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Usuário não encontrado!");
+        if (usuario == null) {
+            throw new EntityNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!");
         }
+
+        UsuarioEntity usuarioByEmail = usuarioRepository.findByEmail(usuarioDTO.email());
+
+        if (usuarioByEmail != null && !usuarioByEmail.getLogin().equals(usuarioDTO.login())) {
+            throw new IllegalArgumentException("Esse e-mail já está sendo utilizado por outro usuário.");
+        }
+
+        usuario.setNome(usuarioDTO.nome());
+        usuario.setEmail(usuarioDTO.email());
+        usuario.setTipoUsuario(usuarioDTO.tipoUsuario());
+        usuario.setDataAtualizacao(LocalDateTime.now());
+
+        usuarioRepository.save(usuario);
     }
 
     public void deleteUsuario(String login) {
-        try {
-            UsuarioEntity usuarioDelete = usuarioRepository.findByLogin(login);
-            usuarioRepository.delete(usuarioDelete);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Usuário não encontrado!", e);
+        UsuarioEntity usuarioDelete = usuarioRepository.findByLogin(login);
+        if (usuarioDelete == null) {
+            throw new EntityNotFoundException("Usuário não encontrado!");
         }
+        usuarioRepository.delete(usuarioDelete);
     }
 
     public List<UsuarioResponseDTO> buscarUsuarios() {

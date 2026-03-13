@@ -3,10 +3,7 @@ package com.fiap.infomed.controller;
 import com.fiap.infomed.entities.ConsultaEntity;
 import com.fiap.infomed.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/agendamento")
@@ -22,5 +19,10 @@ public class AgendamentoController {
     @PostMapping
     public ConsultaEntity create(@RequestBody ConsultaEntity agendamento) {
         return service.createAppointment(agendamento);
+    }
+
+    @PutMapping
+    public ConsultaEntity updateAppointment(@RequestBody ConsultaEntity agendamento) {
+        return service.updateAppointment(agendamento);
     }
 }

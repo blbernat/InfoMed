@@ -18,9 +18,17 @@ public class AgendamentoProducer {
 
         rabbitTemplate.convertAndSend(
                 RabbitConfig.EXCHANGE,
-                RabbitConfig.ROUTING_KEY,
+                RabbitConfig.ROUTING_KEY_CREATED,
                 agendamento
         );
 
+    }
+
+    public void sendAgendamentoUpdated(ConsultaEntity updated) {
+        rabbitTemplate.convertAndSend(
+                RabbitConfig.EXCHANGE,
+                RabbitConfig.ROUTING_KEY_UPDATED,
+                updated
+        );
     }
 }
