@@ -51,6 +51,8 @@ public class UsuarioService {
 
         usuario.setNome(usuarioDTO.nome());
         usuario.setEmail(usuarioDTO.email());
+        usuario.setCpf(usuarioDTO.cpf());
+        usuario.setDataNascimento(usuarioDTO.dataNascimento());
         usuario.setTipoUsuario(usuarioDTO.tipoUsuario());
         usuario.setDataAtualizacao(LocalDateTime.now());
 
