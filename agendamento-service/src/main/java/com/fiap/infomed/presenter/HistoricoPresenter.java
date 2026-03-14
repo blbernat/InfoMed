@@ -9,7 +9,7 @@ import com.fiap.infomed.entities.UsuarioEntity;
 
 public class HistoricoPresenter {
     public static ConsultaResponseDTO toConsultaDTO(ConsultaEntity entity) {
-        return new ConsultaResponseDTO(
+        return new ConsultaResponseDTO(entity.getId(),
                 entity.getStatus(),
                 entity.getObservacao(),
                 entity.getDataConsulta(),

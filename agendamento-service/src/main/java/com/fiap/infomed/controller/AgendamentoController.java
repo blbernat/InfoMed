@@ -3,58 +3,63 @@ package com.fiap.infomed.controller;
 import com.fiap.infomed.dto.AgendamentoCreateDTO;
 import com.fiap.infomed.dto.AgendamentoResponseDTO;
 import com.fiap.infomed.dto.AgendamentoUpdateDTO;
+import com.fiap.infomed.dto.ConsultaResponseDTO;
 import com.fiap.infomed.service.AgendamentoService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/agendamento")
-@Tag(name = "Agendamento", description = "Endpoints para agendamento de consultas")
+@Controller
 public class AgendamentoController {
+    private final AgendamentoService agendamentoService;
 
-    private final AgendamentoService service;
-
-    public AgendamentoController(AgendamentoService service) {
-        this.service = service;
+    public AgendamentoController(AgendamentoService agendamentoService) {
+        this.agendamentoService = agendamentoService;
     }
 
-    @PostMapping
-    public AgendamentoResponseDTO create(@RequestBody @Valid AgendamentoCreateDTO agendamentoDTO) {
-        return service.createAppointment(agendamentoDTO);
+    @QueryMapping
+    @PreAuthorize("hasPermission(#patientId, 'Patient', 'read')")
+    public List<ConsultaResponseDTO> patientAppointments(@Argument Long patientId) {
+        return agendamentoService.patientAppointments(patientId);
     }
 
-    @PutMapping
-    public AgendamentoResponseDTO updateAppointment(@RequestBody @Valid AgendamentoUpdateDTO agendamentoDTO) {
-        return service.updateAppointment(agendamentoDTO);
+    @QueryMapping
+    @PreAuthorize("hasPermission(#patientId, 'Patient', 'read')")
+    public List<ConsultaResponseDTO> futureAppointments(@Argument Long patientId) {
+        return agendamentoService.futureAppointments(patientId);
     }
 
-    @DeleteMapping
-    public void deleteAppointment(@RequestParam Long id) {
-        service.deleteAppointment(id);
+    @MutationMapping
+    @PreAuthorize("hasAnyRole('MEDICO', 'ENFERMEIRO')")
+    public AgendamentoResponseDTO createAppointment(@Argument AgendamentoCreateDTO agendamentoCreateDTO) {
+        return agendamentoService.createAgendamento(agendamentoCreateDTO);
     }
 
-    @GetMapping("/consulta")
-    public AgendamentoResponseDTO findById(@RequestParam Long idConsulta) {
-        return service.findById(idConsulta);
+    @MutationMapping
+    @PreAuthorize("hasAnyRole('MEDICO', 'ENFERMEIRO')")
+    public AgendamentoResponseDTO updateAppointment(@Argument AgendamentoUpdateDTO agendamentoUpdateDTO) {
+        return agendamentoService.updateAgendamento(agendamentoUpdateDTO);
     }
 
-    @GetMapping("/paciente")
-    public List<AgendamentoResponseDTO> findByPacienteId(@RequestParam Long pacienteId) {
-        return service.findByPacienteId(pacienteId);
+    @MutationMapping
+    @PreAuthorize("hasAnyRole('MEDICO', 'ENFERMEIRO')")
+    public void deleteAppointment(@Argument Long id) {
+        agendamentoService.deleteAppointment(id);
     }
 
-    @GetMapping("/medico")
-    public List<AgendamentoResponseDTO> findByMedicoId(@RequestParam Long pacienteId) {
-        return service.findByMedicoId(pacienteId);
+    @QueryMapping
+    @PreAuthorize("hasAnyRole('MEDICO', 'ENFERMEIRO')")
+    public List<AgendamentoResponseDTO> findByMedicoId (@Argument Long medicoId) {
+        return agendamentoService.findByMedicoId(medicoId);
+    }
+
+    @QueryMapping
+    @PreAuthorize("hasPermission(#consultaId, 'Consulta', 'read')")
+    public AgendamentoResponseDTO findById (@Argument Long consultaId) {
+        return agendamentoService.findById(consultaId);
     }
 }

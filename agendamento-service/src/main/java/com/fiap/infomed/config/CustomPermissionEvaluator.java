@@ -12,17 +12,16 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-        if ((authentication == null) || (targetDomainObject == null) || !(targetDomainObject instanceof Long)) {
+        if ((authentication == null) || !(targetDomainObject instanceof Long patientId)) {
             return false;
         }
 
-        Long patientId = (Long) targetDomainObject;
         return hasPermission(authentication, patientId, permission.toString());
     }
 
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        if ((authentication == null) || (targetType == null) || !(targetId instanceof Long)) {
+        if ((authentication == null) || (targetType == null) || !(targetId instanceof Long patientId)) {
             return false;
         }
 
@@ -30,16 +29,13 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             return false;
         }
 
-        Long patientId = (Long) targetId;
-
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             if (authority.getAuthority().equals("ROLE_MEDICO") || authority.getAuthority().equals("ROLE_ENFERMEIRO")) {
                 return true;
             }
         }
 
-        if (authentication.getPrincipal() instanceof CustomUserDetails) {
-            CustomUserDetails currentUser = (CustomUserDetails) authentication.getPrincipal();
+        if (authentication.getPrincipal() instanceof CustomUserDetails currentUser) {
             return currentUser.getPatientId() != null && currentUser.getPatientId().equals(patientId);
         }
 
