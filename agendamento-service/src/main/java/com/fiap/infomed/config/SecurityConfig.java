@@ -3,6 +3,7 @@ package com.fiap.infomed.config;
 import com.fiap.infomed.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,6 +27,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
                         .requestMatchers("/api/agendamento/**").hasAnyRole("MEDICO", "ENFERMEIRO")
                         .requestMatchers("/graphql/**").authenticated()
                         .anyRequest().authenticated()
@@ -33,11 +35,6 @@ public class SecurityConfig {
                 .httpBasic(org.springframework.security.config.Customizer.withDefaults());
 
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return customUserDetailsService;
     }
 
     @Bean

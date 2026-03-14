@@ -29,6 +29,8 @@ public class UsuarioService {
         usuario.setNome(usuarioDTO.nome());
         usuario.setEmail(usuarioDTO.email());
         usuario.setLogin(usuarioDTO.login());
+        usuario.setCpf(usuarioDTO.cpf());
+        usuario.setDataNascimento(usuarioDTO.dataNascimento());
         usuario.setSenha(passwordEncoder.encode(usuarioDTO.senha())); // Encode the password
         usuario.setTipoUsuario(usuarioDTO.tipoUsuario());
         usuario.setDataAtualizacao(LocalDateTime.now());
@@ -72,9 +74,12 @@ public class UsuarioService {
 
     private UsuarioResponseDTO mapToDomainUsuario(UsuarioEntity usuario){
         if (usuario == null) return null;
-        return new UsuarioResponseDTO(usuario.getNome(),
+        return new UsuarioResponseDTO(usuario.getId(),
+                usuario.getNome(),
                 usuario.getEmail(),
                 usuario.getLogin(),
+                usuario.getCpf(),
+                usuario.getDataNascimento(),
                 usuario.getDataAtualizacao(),
                 usuario.getTipoUsuario());
     }
