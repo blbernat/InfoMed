@@ -1,13 +1,13 @@
 package com.fiap.infomed.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import com.fiap.infomed.entities.EStatusConsulta;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 public record AgendamentoCreateDTO(
-        @NotBlank(message = "Status é obrigatório")
-        String status,
+        @NotNull(message = "Status é obrigatório")
+        EStatusConsulta status,
         String observacao,
         @NotNull(message = "Data da consulta é obrigatória")
         LocalDateTime dataConsulta,

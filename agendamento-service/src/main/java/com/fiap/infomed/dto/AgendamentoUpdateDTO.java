@@ -1,6 +1,6 @@
 package com.fiap.infomed.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import com.fiap.infomed.entities.EStatusConsulta;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -8,13 +8,9 @@ import java.time.LocalDateTime;
 public record AgendamentoUpdateDTO(
         @NotNull(message = "ID do agendamento é obrigatório")
         Long id,
-        @NotBlank(message = "Status é obrigatório")
-        String status,
+        @NotNull(message = "Status é obrigatório")
+        EStatusConsulta status,
         String observacao,
         @NotNull(message = "Data da consulta é obrigatória")
-        LocalDateTime dataConsulta,
-        @NotNull(message = "ID do paciente é obrigatório")
-        Long pacienteId,
-        @NotNull(message = "ID do médico é obrigatório")
-        Long medicoId
+        LocalDateTime dataConsulta
 ) {}

@@ -74,6 +74,11 @@ public class UsuarioService {
                 .toList();
     }
 
+    public UsuarioEntity findUsuarioById(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado!"));
+    }
+
     private UsuarioResponseDTO mapToDomainUsuario(UsuarioEntity usuario){
         if (usuario == null) return null;
         return new UsuarioResponseDTO(usuario.getId(),
