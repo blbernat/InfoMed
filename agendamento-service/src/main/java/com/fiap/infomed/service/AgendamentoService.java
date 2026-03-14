@@ -7,21 +7,24 @@ import com.fiap.infomed.entities.ConsultaEntity;
 import com.fiap.infomed.entities.UsuarioEntity;
 import com.fiap.infomed.messaging.AgendamentoProducer;
 import com.fiap.infomed.repository.AgendamentoRepository;
-import com.fiap.infomed.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AgendamentoService {
 
     private final AgendamentoRepository repository;
     private final AgendamentoProducer producer;
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
-    public AgendamentoService(AgendamentoRepository repository, AgendamentoProducer producer, UsuarioRepository usuarioRepository) {
+    public AgendamentoService(AgendamentoRepository repository,
+                              AgendamentoProducer producer,
+                              UsuarioService usuarioRepository) {
         this.repository = repository;
         this.producer = producer;
-        this.usuarioRepository = usuarioRepository;
+        this.usuarioService = usuarioRepository;
     }
 
     public AgendamentoResponseDTO createAppointment(AgendamentoCreateDTO agendamentoDTO) {
@@ -30,12 +33,10 @@ public class AgendamentoService {
         appointment.setObservacao(agendamentoDTO.observacao());
         appointment.setDataConsulta(agendamentoDTO.dataConsulta());
 
-        UsuarioEntity paciente = usuarioRepository.findById(agendamentoDTO.pacienteId())
-                .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com o ID: " + agendamentoDTO.pacienteId()));
+        UsuarioEntity paciente = usuarioService.findUsuarioById(agendamentoDTO.pacienteId());
         appointment.setPaciente(paciente);
 
-        UsuarioEntity medico = usuarioRepository.findById(agendamentoDTO.medicoId())
-                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado com o ID: " + agendamentoDTO.medicoId()));
+        UsuarioEntity medico = usuarioService.findUsuarioById(agendamentoDTO.medicoId());
         appointment.setMedico(medico);
 
         ConsultaEntity saved = repository.save(appointment);
@@ -57,14 +58,6 @@ public class AgendamentoService {
         existingAppointment.setObservacao(agendamentoDTO.observacao());
         existingAppointment.setDataConsulta(agendamentoDTO.dataConsulta());
 
-        UsuarioEntity paciente = usuarioRepository.findById(agendamentoDTO.pacienteId())
-                .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com o ID: " + agendamentoDTO.pacienteId()));
-        existingAppointment.setPaciente(paciente);
-
-        UsuarioEntity medico = usuarioRepository.findById(agendamentoDTO.medicoId())
-                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado com o ID: " + agendamentoDTO.medicoId()));
-        existingAppointment.setMedico(medico);
-
         ConsultaEntity updated = repository.save(existingAppointment);
         producer.sendAgendamentoUpdated(updated);
         return mapToAgendamentoResponseDTO(updated);
@@ -75,6 +68,24 @@ public class AgendamentoService {
             throw new EntityNotFoundException("Agendamento não encontrado para exclusão com o ID: " + id);
         }
         repository.deleteById(id);
+    }
+
+    public List<AgendamentoResponseDTO> findByPacienteId(Long pacienteId) {
+        UsuarioEntity paciente = usuarioService.findUsuarioById(pacienteId);
+        List<ConsultaEntity> consultaEntity = repository.findByPacienteId(paciente.getId());
+        return consultaEntity
+                .stream()
+                .map(this::mapToAgendamentoResponseDTO)
+                .toList();
+    }
+
+    public List<AgendamentoResponseDTO> findByMedicoId(Long medicoId) {
+        UsuarioEntity medico = usuarioService.findUsuarioById(medicoId);
+        List<ConsultaEntity> consultaEntity = repository.findByMedicoId(medico.getId());
+        return consultaEntity
+                .stream()
+                .map(this::mapToAgendamentoResponseDTO)
+                .toList();
     }
 
     private AgendamentoResponseDTO mapToAgendamentoResponseDTO(ConsultaEntity consultaEntity) {
