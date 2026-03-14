@@ -1,11 +1,33 @@
 schema {
     query: Query
+    mutation: Mutation
 }
 
 type Query {
     patientAppointments(patientId: ID!): [Consulta]
     futureAppointments(patientId: ID!): [Consulta]
     patientHistory(patientId: ID!): [Historico]
+}
+
+type Mutation {
+    createAppointment(agendamentoCreateDTO: AgendamentoCreateInput!): Consulta
+    updateAppointment(agendamentoUpdateDTO: AgendamentoUpdateInput!): Consulta
+    deleteAppointment(id: ID!): Boolean
+}
+
+input AgendamentoCreateInput {
+    pacienteId: ID!
+    medicoId: ID!
+    dataConsulta: String!
+    observacao: String
+    status: String!
+}
+
+input AgendamentoUpdateInput {
+    id: ID!
+    dataConsulta: String
+    observacao: String
+    status: String
 }
 
 type Consulta {

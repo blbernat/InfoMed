@@ -3,13 +3,16 @@ package com.fiap.infomed.service;
 import com.fiap.infomed.dto.AgendamentoCreateDTO;
 import com.fiap.infomed.dto.AgendamentoResponseDTO;
 import com.fiap.infomed.dto.AgendamentoUpdateDTO;
+import com.fiap.infomed.dto.ConsultaResponseDTO;
 import com.fiap.infomed.entities.ConsultaEntity;
 import com.fiap.infomed.entities.UsuarioEntity;
 import com.fiap.infomed.messaging.AgendamentoProducer;
+import com.fiap.infomed.presenter.HistoricoPresenter;
 import com.fiap.infomed.repository.AgendamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,7 +30,7 @@ public class AgendamentoService {
         this.usuarioService = usuarioRepository;
     }
 
-    public AgendamentoResponseDTO createAppointment(AgendamentoCreateDTO agendamentoDTO) {
+    public AgendamentoResponseDTO createAgendamento(AgendamentoCreateDTO agendamentoDTO) {
         ConsultaEntity appointment = new ConsultaEntity();
         appointment.setStatus(agendamentoDTO.status());
         appointment.setObservacao(agendamentoDTO.observacao());
@@ -50,7 +53,7 @@ public class AgendamentoService {
         return mapToAgendamentoResponseDTO(consultaEntity);
     }
 
-    public AgendamentoResponseDTO updateAppointment(AgendamentoUpdateDTO agendamentoDTO) {
+    public AgendamentoResponseDTO updateAgendamento(AgendamentoUpdateDTO agendamentoDTO) {
         ConsultaEntity existingAppointment = repository.findById(agendamentoDTO.id())
                 .orElseThrow(() -> new EntityNotFoundException("Agendamento não encontrado para atualização com o ID: " + agendamentoDTO.id()));
 
@@ -85,6 +88,24 @@ public class AgendamentoService {
         return consultaEntity
                 .stream()
                 .map(this::mapToAgendamentoResponseDTO)
+                .toList();
+    }
+
+    public List<ConsultaResponseDTO> patientAppointments(Long patientId) {
+        return repository.findByPacienteId(patientId)
+                .stream()
+                .map(HistoricoPresenter::toConsultaDTO)
+                .toList();
+    }
+
+    public List<ConsultaResponseDTO> futureAppointments(Long patientId) {
+        LocalDateTime now = LocalDateTime.now();
+        return repository.findByPacienteId(patientId)
+                .stream()
+                .filter(c -> c.getPaciente() != null
+                        && (patientId).equals(c.getPaciente().getId())
+                        && c.getDataConsulta().isAfter(now))
+                .map(HistoricoPresenter::toConsultaDTO)
                 .toList();
     }
 

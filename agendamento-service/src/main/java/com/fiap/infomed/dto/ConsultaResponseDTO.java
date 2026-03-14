@@ -4,8 +4,9 @@ import com.fiap.infomed.entities.EStatusConsulta;
 
 import java.time.LocalDateTime;
 
-public record ConsultaResponseDTO(EStatusConsulta status,
+public record ConsultaResponseDTO(Long id,
+                                  EStatusConsulta status,
                                   String observacao,
-                                  LocalDateTime horaConsulta,
+                                  LocalDateTime dataHora,
                                   MedicoDTO medicoDTO) {
 }
