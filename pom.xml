@@ -22,6 +22,15 @@
         <module>agendamento-service</module>
         <module>notification-service</module>
     </modules>
+    <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
+        </dependency>
+
+    </dependencies>
     <build>
         <pluginManagement>
             <plugins>
