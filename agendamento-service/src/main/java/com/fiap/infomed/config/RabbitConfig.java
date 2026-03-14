@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
     public static final String EXCHANGE = "agendamento.exchange";
     public static final String QUEUE = "agendamento.queue";
-    public static final String ROUTING_KEY = "agendamento.created";
+    public static final String ROUTING_KEY_CREATED = "agendamento.created";
+    public static final String ROUTING_KEY_UPDATED = "agendamento.updated";
 
     @Bean
     public Queue agendamentoQueue() {
@@ -24,13 +25,24 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding agendamentoBinding(
+    public Binding agendamentoCreatedBinding(
             Queue appointmentQueue,
             TopicExchange appointmentExchange) {
 
         return BindingBuilder
                 .bind(appointmentQueue)
                 .to(appointmentExchange)
-                .with(ROUTING_KEY);
+                .with(ROUTING_KEY_CREATED);
+    }
+
+    @Bean
+    public Binding agendamentoUpdatedBinding(
+            Queue appointmentQueue,
+            TopicExchange appointmentExchange) {
+
+        return BindingBuilder
+                .bind(appointmentQueue)
+                .to(appointmentExchange)
+                .with(ROUTING_KEY_UPDATED);
     }
 }

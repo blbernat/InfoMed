@@ -1,11 +1,10 @@
 package com.fiap.infomed.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name="usuario")
@@ -30,10 +29,16 @@ public class UsuarioEntity {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
+    private String cpf;
+
+    @Column(name= "data_nascimento")
+    private LocalDate dataNascimento;
+
     @Column(name= "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
     @Enumerated(EnumType.STRING)
-    private TipoUsuarioEntity tipoUsuario;
+    private ETipoUsuario tipoUsuario;
 
 }

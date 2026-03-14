@@ -1,6 +1,6 @@
 package com.fiap.infomed.entities;
 
-public enum TipoUsuarioEntity {
+public enum ETipoUsuario {
     MEDICO,
     ENFERMEIRO,
     PACIENTE

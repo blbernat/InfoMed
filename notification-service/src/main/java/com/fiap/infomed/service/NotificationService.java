@@ -1,11 +1,11 @@
 package com.fiap.infomed.service;
 
-import com.fiap.infomed.entities.ConsultaEntity;
+import com.fiap.infomed.dto.AgendamentoMessageDTO;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationService {
-    public void sendReminder(ConsultaEntity agendamento) {
+    public void sendReminder(AgendamentoMessageDTO agendamento) {
 
         System.out.println(
                 "Lembrete enviado ao paciente "

@@ -1,6 +1,6 @@
 package com.fiap.infomed.consumer;
 
-import com.fiap.infomed.entities.ConsultaEntity;
+import com.fiap.infomed.dto.AgendamentoMessageDTO;
 import com.fiap.infomed.service.NotificationService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class AgendamentoConsumer {
     }
 
     @RabbitListener(queues = "agendamento.queue")
-    public void receive(ConsultaEntity agendamento) {
+    public void receive(AgendamentoMessageDTO agendamento) {
         service.sendReminder(agendamento);
     }
 }

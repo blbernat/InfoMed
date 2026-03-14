@@ -22,6 +22,8 @@ public class HistoricoEntity {
 
     private String tratamento;
 
+    private String observacoes;
+
     @Column(name= "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
