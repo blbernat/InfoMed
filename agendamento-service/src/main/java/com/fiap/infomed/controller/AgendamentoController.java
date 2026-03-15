@@ -1,6 +1,9 @@
 package com.fiap.infomed.controller;
 
-import com.fiap.infomed.dto.*;
+import com.fiap.infomed.dto.AgendamentoCreateDTO;
+import com.fiap.infomed.dto.AgendamentoResponseDTO;
+import com.fiap.infomed.dto.AgendamentoUpdateDTO;
+import com.fiap.infomed.dto.UsuarioDTO;
 import com.fiap.infomed.entities.UsuarioEntity;
 import com.fiap.infomed.service.AgendamentoService;
 import com.fiap.infomed.service.UsuarioService;
