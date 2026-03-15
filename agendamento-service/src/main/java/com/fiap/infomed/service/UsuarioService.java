@@ -3,6 +3,7 @@ package com.fiap.infomed.service;
 import com.fiap.infomed.dto.UsuarioCreateDTO;
 import com.fiap.infomed.dto.UsuarioResponseDTO;
 import com.fiap.infomed.dto.UsuarioUpdateDTO;
+import com.fiap.infomed.dto.UsuarioUpdateSenhaDTO;
 import com.fiap.infomed.entities.UsuarioEntity;
 import com.fiap.infomed.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -64,6 +65,21 @@ public class UsuarioService {
                 .orElseThrow(() ->
                         new EntityNotFoundException("Usuário não encontrado!"));
         usuarioRepository.delete(usuarioDelete);
+    }
+
+    public void updateSenhaUsuario(UsuarioUpdateSenhaDTO usuarioDTO) {
+        UsuarioEntity usuario = usuarioRepository.findByLogin(usuarioDTO.login())
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!"));
+
+        if (!usuario.getSenha().equals(usuarioDTO.senhaAtual())) {
+            throw new IllegalArgumentException("A senha atual está incorreta!");
+        }
+
+        usuario.setSenha(usuarioDTO.senhaNova());
+        usuario.setDataAtualizacao(LocalDateTime.now());
+
+        usuarioRepository.save(usuario);
     }
 
     public List<UsuarioResponseDTO> buscarUsuarios() {
