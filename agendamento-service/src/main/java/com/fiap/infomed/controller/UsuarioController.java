@@ -3,6 +3,7 @@ package com.fiap.infomed.controller;
 import com.fiap.infomed.dto.UsuarioCreateDTO;
 import com.fiap.infomed.dto.UsuarioResponseDTO;
 import com.fiap.infomed.dto.UsuarioUpdateDTO;
+import com.fiap.infomed.dto.UsuarioUpdateSenhaDTO;
 import com.fiap.infomed.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,12 @@ public class UsuarioController {
     @DeleteMapping("/{login}")
     public ResponseEntity<Void> deleteUsuario(@PathVariable("login") String login) {
         usuarioService.deleteUsuario(login);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/senha")
+    public ResponseEntity<Void> updateSenhaUsuario(@Valid @RequestBody UsuarioUpdateSenhaDTO usuario) {
+        usuarioService.updateSenhaUsuario(usuario);
         return ResponseEntity.ok().build();
     }
 }
