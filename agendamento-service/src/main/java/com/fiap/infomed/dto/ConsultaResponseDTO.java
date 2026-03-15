@@ -8,5 +8,6 @@ public record ConsultaResponseDTO(Long id,
                                   EStatusConsulta status,
                                   String observacao,
                                   LocalDateTime dataHora,
-                                  MedicoDTO medicoDTO) {
+                                  MedicoDTO medicoDTO,
+                                  UsuarioDTO pacienteDTO) {
 }
