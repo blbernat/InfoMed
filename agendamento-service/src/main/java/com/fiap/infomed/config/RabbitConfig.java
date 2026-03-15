@@ -13,6 +13,8 @@ public class RabbitConfig {
     public static final String QUEUE = "agendamento.queue";
     public static final String ROUTING_KEY_CREATED = "agendamento.created";
     public static final String ROUTING_KEY_UPDATED = "agendamento.updated";
+    public static final String ROUTING_KEY_DELETED = "agendamento.deletado";
+
 
     @Bean
     public Queue agendamentoQueue() {
@@ -44,5 +46,16 @@ public class RabbitConfig {
                 .bind(appointmentQueue)
                 .to(appointmentExchange)
                 .with(ROUTING_KEY_UPDATED);
+    }
+
+    @Bean
+    public Binding agendamentoDeletedBinding(
+            Queue appointmentQueue,
+            TopicExchange appointmentExchange) {
+
+        return BindingBuilder
+                .bind(appointmentQueue)
+                .to(appointmentExchange)
+                .with(ROUTING_KEY_DELETED);
     }
 }

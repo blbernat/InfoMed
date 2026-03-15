@@ -31,6 +31,10 @@ public class AgendamentoProducer {
         sendEvent(updated, RabbitConfig.ROUTING_KEY_UPDATED);
     }
 
+    public void sendAgendamentoDeleted(ConsultaEntity deleted) {
+        sendEvent(deleted, RabbitConfig.ROUTING_KEY_DELETED);
+    }
+
     private void sendEvent(ConsultaEntity agendamento, String routingKey) {
         AgendamentoMessageDTO messageDTO = convertToAgendamentoMessageDTO(agendamento);
         try {

@@ -1,21 +1,11 @@
 package com.fiap.infomed.presenter;
 
-import com.fiap.infomed.dto.ConsultaResponseDTO;
 import com.fiap.infomed.dto.HistoricalResponseDTO;
 import com.fiap.infomed.dto.MedicoDTO;
-import com.fiap.infomed.entities.ConsultaEntity;
 import com.fiap.infomed.entities.HistoricoEntity;
 import com.fiap.infomed.entities.UsuarioEntity;
 
 public class HistoricoPresenter {
-    public static ConsultaResponseDTO toConsultaDTO(ConsultaEntity entity) {
-        return new ConsultaResponseDTO(entity.getId(),
-                entity.getStatus(),
-                entity.getObservacao(),
-                entity.getDataConsulta(),
-                toMedicoDTO(entity.getMedico()));
-    }
-
     private static MedicoDTO toMedicoDTO(UsuarioEntity usuarioEntity) {
         return new MedicoDTO(
                 usuarioEntity.getId(),
