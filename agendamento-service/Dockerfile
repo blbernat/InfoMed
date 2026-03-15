@@ -4,6 +4,7 @@ WORKDIR /build
 
 COPY . .
 
+RUN chmod +x ./mvnw
 RUN ./mvnw dependency:go-offline -B
 RUN ./mvnw clean package -DskipTests
 
