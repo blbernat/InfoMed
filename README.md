@@ -7,26 +7,25 @@ O InfoMed permite o agendamento consultas, o gerenciamento do histórico de paci
  
 
 ## Tecnologias Utilizadas
-- Java
+- Java 21
 - Spring Boot
 - RabbitMQ
 - GraphQL
 - Maven
 - MySQL
 - Docker e Docker Compose
-- Swagger
 - Postman
 
 ## Como Configurar
 ### Pré-requisitos
-- Java JDK 24
+- Java JDK 21
 - Maven
 - MySQL 
 - Docker
 - Postman
 
 ### Instalação
-1. Clone o repositório: `git clone `
+1. Clone o repositório: `git clone https://github.com/blbernat/InfoMed.git`
 2. Instale as dependências e rodar o projeto com o docker, conforme passo a passo do próximo tópico:
 
 ### Docker
@@ -34,15 +33,6 @@ O InfoMed permite o agendamento consultas, o gerenciamento do histórico de paci
 1. Acessar o diretório `InfoMed/docker`
 2. Rodar o comando `docker-compose up` (caso queira acompanhar os logs) ou `docker-compose up -d`
 3. A aplicação estará rodando na porta http://localhost:8080
-
-* ####  Caso queira rodar a aplicação local e utilizar o banco via docker:
-1. Acessar o diretório `InfoMed/docker`
-2. Rodar o comando `docker compose -f docker-compose-mysql.yml up` (caso queira acompanhar os logs) ou `docker compose -f docker-compose-mysql.yml up -d`
-3. Iniciar a aplicação manualmente ou via IDE
-
-## Documentação da API (Swagger)
-- Após iniciar o projeto, acesse a documentação Swagger em: http://localhost:8080/swagger-ui/index.html
-- O controle de versionamento também pode ser visualizado pela documentação no Swagger. Para melhor entendimento, leia o exemplo: https://dzone.com/articles/versioning-rest-api-with-spring-boot-and-swagger
 
 ## Exemplos de Uso
 
