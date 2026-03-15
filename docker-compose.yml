@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:oracle
     container_name: infomed_mysql
     restart: always
     ports:
@@ -12,11 +12,16 @@ services:
       MYSQL_PASSWORD: password_infomed
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD" ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
     networks:
       - infomed-network
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:4.2.3-management-alpine
     container_name: rabbitmq
     ports:
       - "5672:5672"
@@ -44,8 +49,10 @@ services:
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
     depends_on:
-      - mysql
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
     networks:
       - infomed-network
 
@@ -64,8 +71,10 @@ services:
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
     depends_on:
-      - mysql
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
     networks:
       - infomed-network
 
