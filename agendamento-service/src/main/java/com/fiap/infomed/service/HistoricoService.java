@@ -1,6 +1,5 @@
 package com.fiap.infomed.service;
 
-import com.fiap.infomed.dto.ConsultaResponseDTO;
 import com.fiap.infomed.dto.HistoricalResponseDTO;
 import com.fiap.infomed.dto.HistoricoUpdateDTO;
 import com.fiap.infomed.entities.HistoricoEntity;
