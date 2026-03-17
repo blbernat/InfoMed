@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS notificacao;
+GRANT ALL PRIVILEGES ON notificacao.* TO 'user_infomed'@'%';
+FLUSH PRIVILEGES;
