@@ -6,6 +6,7 @@ import com.fiap.infomed.entities.NotificacaoEntity;
 import com.fiap.infomed.enums.EStatusConsulta;
 import com.fiap.infomed.enums.EStatusNotificacao;
 import com.fiap.infomed.repositories.NotificacaoRepository;
+import com.fiap.infomed.sender.NotificationSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +23,9 @@ class NotificationServiceTest {
 
     @Mock
     private NotificacaoRepository repository;
+
+    @Mock
+    private NotificationSender notificationSender;
 
     @InjectMocks
     private NotificationService notificationService;
@@ -95,6 +99,7 @@ class NotificationServiceTest {
 
         notificationService.verificarEEnviarNotificacoes();
 
+        verify(notificationSender, times(1)).send(notificacao);
         verify(repository, times(1)).save(notificacao);
         assert notificacao.getStatusNotificacao().equals(EStatusNotificacao.ENVIADO);
     }
