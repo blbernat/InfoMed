@@ -1,5 +1,6 @@
 package com.fiap.infomed.consumer;
 
+import com.fiap.infomed.config.RabbitConfig;
 import com.fiap.infomed.dto.AgendamentoMessageDTO;
 import com.fiap.infomed.service.NotificationService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -14,8 +15,18 @@ public class AgendamentoConsumer {
         this.service = service;
     }
 
-    @RabbitListener(queues = "agendamento.queue")
-    public void receive(AgendamentoMessageDTO agendamento) {
-        service.sendReminder(agendamento);
+    @RabbitListener(queues = RabbitConfig.QUEUE_CREATED)
+    public void receiveCreated(AgendamentoMessageDTO agendamento) {
+        service.saveNotification(agendamento);
+    }
+
+    @RabbitListener(queues = RabbitConfig.QUEUE_UPDATED)
+    public void receiveUpdated(AgendamentoMessageDTO agendamento) {
+        service.updateNotification(agendamento);
+    }
+
+    @RabbitListener(queues = RabbitConfig.QUEUE_DELETED)
+    public void receiveDeleted(AgendamentoMessageDTO agendamento) {
+        service.deleteNotification(agendamento);
     }
 }

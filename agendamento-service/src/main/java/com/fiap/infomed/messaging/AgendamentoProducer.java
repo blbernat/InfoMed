@@ -1,8 +1,5 @@
 package com.fiap.infomed.messaging;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fiap.infomed.config.RabbitConfig;
 import com.fiap.infomed.dto.AgendamentoMessageDTO;
 import com.fiap.infomed.dto.UsuarioDTO;
@@ -15,12 +12,9 @@ import org.springframework.stereotype.Component;
 public class AgendamentoProducer {
 
     private final RabbitTemplate rabbitTemplate;
-    private final ObjectMapper objectMapper;
 
-    public AgendamentoProducer(RabbitTemplate rabbitTemplate, ObjectMapper objectMapper) {
+    public AgendamentoProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
-        this.objectMapper = objectMapper;
-        this.objectMapper.registerModule(new JavaTimeModule());
     }
 
     public void sendAgendamentoCreated(ConsultaEntity agendamento) {
@@ -37,16 +31,11 @@ public class AgendamentoProducer {
 
     private void sendEvent(ConsultaEntity agendamento, String routingKey) {
         AgendamentoMessageDTO messageDTO = convertToAgendamentoMessageDTO(agendamento);
-        try {
-            String jsonMessage = objectMapper.writeValueAsString(messageDTO);
-            rabbitTemplate.convertAndSend(
-                    RabbitConfig.EXCHANGE,
-                    routingKey,
-                    jsonMessage
-            );
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error converting AgendamentoMessageDTO to JSON", e);
-        }
+        rabbitTemplate.convertAndSend(
+                RabbitConfig.EXCHANGE,
+                routingKey,
+                messageDTO
+        );
     }
 
     private AgendamentoMessageDTO convertToAgendamentoMessageDTO(ConsultaEntity entity) {
