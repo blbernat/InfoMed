@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AgendamentoService {
@@ -57,7 +58,10 @@ public class AgendamentoService {
                 .orElseThrow(() -> new EntityNotFoundException("Agendamento não encontrado para atualização com o ID: " + agendamentoDTO.id()));
 
         existingAppointment.setStatus(agendamentoDTO.status());
-        existingAppointment.setObservacao(agendamentoDTO.observacao());
+        if (agendamentoDTO.observacao() != null
+                && !agendamentoDTO.observacao().isBlank()) {
+            existingAppointment.setObservacao(agendamentoDTO.observacao());
+        }
         existingAppointment.setDataConsulta(agendamentoDTO.dataConsulta());
 
         ConsultaEntity updated = repository.save(existingAppointment);
