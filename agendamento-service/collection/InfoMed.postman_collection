@@ -58,7 +58,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"nome\": \"Samantha Kniss\",\n    \"email\": \"sah.kniss@example.com\",\n    \"login\": \"samtha\",\n    \"senha\": \"123456\",\n    \"cpf\": \"46914462062\",\n    \"dataNascimento\": \"1988-11-25\",\n    \"tipoUsuario\": \"PACIENTE\"\n}"
+              "raw": "{\n    \"nome\": \"Lucas Bruner\",\n    \"email\": \"lucas.bruner@example.com\",\n    \"login\": \"lbruner\",\n    \"senha\": \"123456\",\n    \"cpf\": \"74807189000\",\n    \"dataNascimento\": \"1988-11-25\",\n    \"tipoUsuario\": \"MEDICO\"\n}"
             },
             "url": {
               "raw": "http://localhost:8082/api/usuarios",
