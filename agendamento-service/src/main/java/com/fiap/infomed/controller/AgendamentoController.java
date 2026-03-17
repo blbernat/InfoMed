@@ -63,7 +63,7 @@ public class AgendamentoController {
     }
 
     @QueryMapping
-    @PreAuthorize("hasPermission(#consultaId, 'Consulta', 'read')")
+    @PreAuthorize("hasPermission(#consultaId, 'Patient', 'read')")
     public AgendamentoResponseDTO findById (@Argument Long consultaId) {
         return agendamentoService.findById(consultaId);
     }
@@ -72,13 +72,21 @@ public class AgendamentoController {
     public UsuarioDTO paciente(AgendamentoResponseDTO agendamento) {
         if (agendamento.pacienteId() == null) return null;
         UsuarioEntity usuario = usuarioService.findUsuarioById(agendamento.pacienteId());
-        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail());
+        return new UsuarioDTO(usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail(),
+                usuario.getCpf(),
+                usuario.getTipoUsuario());
     }
 
     @SchemaMapping(typeName = "Consulta", field = "medico")
     public UsuarioDTO medico(AgendamentoResponseDTO agendamento) {
         if (agendamento.medicoId() == null) return null;
         UsuarioEntity usuario = usuarioService.findUsuarioById(agendamento.medicoId());
-        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail());
+        return new UsuarioDTO(usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail(),
+                usuario.getCpf(),
+                usuario.getTipoUsuario());
     }
 }

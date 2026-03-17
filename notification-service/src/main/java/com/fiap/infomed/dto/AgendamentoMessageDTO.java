@@ -1,5 +1,6 @@
 package com.fiap.infomed.dto;
 
+import com.fiap.infomed.enums.EStatusConsulta;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AgendamentoMessageDTO {
     private Long id;
-    private String status;
+    private EStatusConsulta status;
     private String observacao;
     private LocalDateTime dataConsulta;
     private UsuarioDTO paciente;

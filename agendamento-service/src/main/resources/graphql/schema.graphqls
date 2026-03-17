@@ -7,12 +7,15 @@ type Query {
     patientAppointments(patientId: ID!): [Consulta]
     futureAppointments(patientId: ID!): [Consulta]
     patientHistory(patientId: ID!): [Historico]
+    findByMedicoId(medicoId: ID!): [Consulta]
+    findById(consultaId: ID!): Consulta
 }
 
 type Mutation {
     createAppointment(agendamentoCreateDTO: AgendamentoCreateInput!): Consulta
     updateAppointment(agendamentoUpdateDTO: AgendamentoUpdateInput!): Consulta
     deleteAppointment(id: ID!): Boolean
+    updatePatientHistory(historicoUpdateDTO: HistoricoUpdateInput!): Historico
 }
 
 input AgendamentoCreateInput {
@@ -25,9 +28,17 @@ input AgendamentoCreateInput {
 
 input AgendamentoUpdateInput {
     id: ID!
-    dataConsulta: String
+    dataConsulta: String!
     observacao: String
-    status: String
+    status: String!
+}
+
+input HistoricoUpdateInput {
+    id: ID!
+    diagnostico: String
+    tratamento: String
+    observacoes: String
+    dataAtualizacao: String
 }
 
 type Consulta {
