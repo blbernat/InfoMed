@@ -72,7 +72,8 @@ public class UsuarioService {
                 .orElseThrow(() ->
                         new EntityNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!"));
 
-        if (!usuario.getSenha().equals(usuarioDTO.senhaAtual())) {
+        boolean senhaValida = passwordEncoder.matches(usuarioDTO.senhaAtual(), usuario.getSenha());
+        if (!senhaValida) {
             throw new IllegalArgumentException("A senha atual está incorreta!");
         }
 
