@@ -2,7 +2,13 @@ FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
 
 WORKDIR /build
 
+# Instala dos2unix
+RUN apk add --no-cache dos2unix
+
 COPY . .
+
+# Converte o mvnw para o formato unix
+RUN dos2unix ./mvnw
 
 RUN chmod +x ./mvnw
 RUN ./mvnw dependency:go-offline -B

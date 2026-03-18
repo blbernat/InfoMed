@@ -155,12 +155,99 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
         }
       ]
     },
     {
       "name": "Agendamento",
       "item": [
+        {
+          "name": "Excluir agendamento",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "lbruner",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation{\n    deleteAppointment(id: 1)\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/graphql",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "graphql"
+              ]
+            },
+            "description": "Generated from cURL: curl --location 'http://localhost:8080/graphql' \\\r\n--header 'Content-Type: application/json' \\\r\n--data '{\"query\":\"mutation{\\n    deleteAppointment(id: 1)\\n}\",\"variables\":{}}'"
+          },
+          "response": []
+        },
+        {
+          "name": "Consulta por médico",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\n  findByMedicoId(medicoId: \"1\") {\n    id\n    status\n    dataConsulta\n    observacao\n    paciente {\n      id\n      nome\n    }\n    medico {\n      id\n      nome\n    }\n  }\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/graphql",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "graphql"
+              ]
+            },
+            "description": "Generated from cURL: curl --location 'http://localhost:8080/graphql' \\\r\n--header 'Content-Type: application/json' \\\r\n--data '{\"query\":\"query {\\n  findByMedicoId(medicoId: \\\"1\\\") {\\n    id\\n    status\\n    dataConsulta\\n    observacao\\n    paciente {\\n      id\\n      nome\\n    }\\n    medico {\\n      id\\n      nome\\n    }\\n  }\\n}\",\"variables\":{}}'"
+          },
+          "response": []
+        },
         {
           "name": "Adicionar agendamento",
           "request": {
@@ -189,7 +276,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "mutation {\r\n  createAppointment(agendamentoCreateDTO: {\r\n    status: \"AGENDADA\",\r\n    observacao: \"Consulta de rotina\",\r\n    dataConsulta: \"2024-10-20T14:30:00\",\r\n    pacienteId: 3,\r\n    medicoId: 6\r\n  }) {\r\n    id\r\n    status\r\n    dataConsulta\r\n  }\r\n}",
+                "query": "mutation {\r\n  createAppointment(agendamentoCreateDTO: {\r\n    status: \"AGENDADA\",\r\n    observacao: \"Consulta de rotina\",\r\n    dataConsulta: \"2024-10-20T14:30:00\",\r\n    pacienteId: 2,\r\n    medicoId: 1\r\n  }) {\r\n    id\r\n    status\r\n    dataConsulta\r\n  }\r\n}",
                 "variables": ""
               }
             },
@@ -205,6 +292,206 @@
               ]
             },
             "description": "Generated from cURL: curl -X POST http://localhost:8080/agendamentos \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n  \"status\": \"AGENDADO\",\r\n  \"observacao\": \"Consulta de rotina, paciente relata dores de cabeça.\",\r\n  \"dataConsulta\": \"2024-10-20T14:30:00\",\r\n  \"pacienteId\": 1,\r\n  \"medicoId\": 5\r\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "Consulta agendamentos",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "lbruner",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer <SEU_TOKEN_JWT>"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n  patientAppointments(patientId: \"2\") {\r\n    id\r\n    status\r\n    observacao\r\n    dataConsulta\r\n    paciente {\r\n      id\r\n      nome\r\n    }\r\n    medico {\r\n      id\r\n      nome\r\n    }\r\n  }\r\n}\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/graphql",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "graphql"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST \\\r\n  http://localhost:8080/graphql \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -H \"Authorization: Bearer <SEU_TOKEN_JWT>\" \\\r\n  -d '{\"query\": \"query { patientAppointments(patientId: \\\"1\\\") { id status observacao dataConsulta paciente { id nome } medico { id nome } } }\"}'"
+          },
+          "response": []
+        },
+        {
+          "name": "Consultas futuras",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "lbruner",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer <SEU_TOKEN_JWT_AQUI>"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n  futureAppointments(patientId: \"2\") {\r\n    id\r\n    dataConsulta\r\n    status\r\n    observacao\r\n    paciente {\r\n      id\r\n      nome\r\n      email\r\n    }\r\n    medico {\r\n      id\r\n      nome\r\n      email\r\n    }\r\n  }\r\n}\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/graphql",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "graphql"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST \\\r\n  http://localhost:8080/graphql \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Authorization: Bearer <SEU_TOKEN_JWT_AQUI>' \\\r\n  -d '{\r\n    \"query\": \"query { futureAppointments(patientId: \\\"1\\\") { id dataConsulta status observacao paciente { id nome email } medico { id nome email } } }\"\r\n  }'"
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar agendamento",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "lbruner",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query($consultaId: ID!){\n    findById(consultaId: $consultaId){\n        id\n        status\n        observacao\n        dataConsulta\n        paciente{\n            id\n            nome\n            cpf\n            login\n            email\n            tipoUsuario\n        }\n        medico{\n            id\n            nome\n            cpf\n            email\n            tipoUsuario\n        }\n    }\n}",
+                "variables": "{\n  \"consultaId\": \"2\"\n}"
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/graphql",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "graphql"
+              ]
+            },
+            "description": "Generated from cURL: curl --location 'http://localhost:8080/graphql' \\\r\n--header 'Content-Type: application/json' \\\r\n--data '{\"query\":\"query($consultaId: ID!){\\n    findById(consultaId: $consultaId){\\n        id\\n        status\\n        observacao\\n        dataConsulta\\n        paciente{\\n            id\\n            nome\\n            cpf\\n            login\\n            email\\n            tipoUsuario\\n        }\\n        medico{\\n            id\\n            nome\\n            cpf\\n            login\\n            email\\n            tipoUsuario\\n        }\\n    }\\n}\",\"variables\":{\"consultaId\":\"1\"}}'"
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar consulta",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "lbruner",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer <SEU_TOKEN_JWT>"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation UpdateAppointment($dto: AgendamentoUpdateInput!) {\r\n  updateAppointment(agendamentoUpdateDTO: $dto) {\r\n    id\r\n    status\r\n    observacao\r\n    dataConsulta\r\n    paciente {\r\n      id\r\n      nome\r\n    }\r\n    medico {\r\n      id\r\n      nome\r\n    }\r\n  }\r\n}",
+                "variables": "{\r\n  \"dto\": {\r\n    \"id\": \"1\",\r\n\"dataConsulta\": \"2024-10-21T14:30:00\",\r\n    \"observacao\": \"Paciente apresentou melhora, reagendado retorno. TESTE\",\r\n    \"status\": \"REALIZADA\"\r\n  }\r\n}"
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/graphql",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "graphql"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Authorization: Bearer <SEU_TOKEN_JWT>\" \\\r\n-d '{\r\n  \"query\": \"mutation UpdateAppointment($dto: AgendamentoUpdateInput!) { updateAppointment(agendamentoUpdateDTO: $dto) { id status observacao dataConsulta paciente { id nome } medico { id nome } } }\",\r\n  \"variables\": {\r\n    \"dto\": {\r\n      \"id\": \"1\",\r\n      \"dataConsulta\": \"2024-10-21T14:30:00Z\",\r\n      \"observacao\": \"Paciente apresentou melhora, reagendado retorno.\",\r\n      \"status\": \"REAGENDADO\"\r\n    }\r\n  }\r\n}' \\\r\nhttp://localhost:8080/graphql"
           },
           "response": []
         }

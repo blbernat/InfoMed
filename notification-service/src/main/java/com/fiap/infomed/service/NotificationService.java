@@ -4,6 +4,7 @@ import com.fiap.infomed.dto.AgendamentoMessageDTO;
 import com.fiap.infomed.entities.NotificacaoEntity;
 import com.fiap.infomed.enums.EStatusNotificacao;
 import com.fiap.infomed.repositories.NotificacaoRepository;
+import com.fiap.infomed.sender.NotificationSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,9 +13,11 @@ import java.util.List;
 @Service
 public class NotificationService {
     private final NotificacaoRepository repository;
+    private final NotificationSender notificationSender;
 
-    public NotificationService(NotificacaoRepository repository) {
+    public NotificationService(NotificacaoRepository repository, NotificationSender notificationSender) {
         this.repository = repository;
+        this.notificationSender = notificationSender;
     }
 
     public void saveNotification(AgendamentoMessageDTO agendamento) {
@@ -48,13 +51,7 @@ public class NotificationService {
         List<NotificacaoEntity> notificacoesPendentes = repository.findByStatusNotificacao(EStatusNotificacao.PENDENTE);
         for (NotificacaoEntity notificacao : notificacoesPendentes) {
             if (notificacao.getDataConsulta().isAfter(LocalDateTime.now())) {
-                System.out.println("Enviando notificação para: " + notificacao.getNomePaciente());
-                System.out.println(
-                        "Lembrete enviado ao paciente "
-                                + notificacao.getNomePaciente()
-                                + " para consulta no dia "
-                                + notificacao.getDataConsulta()
-                );
+                notificationSender.send(notificacao);
                 notificacao.setStatusNotificacao(EStatusNotificacao.ENVIADO);
                 repository.save(notificacao);
             }
