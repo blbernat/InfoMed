@@ -3,18 +3,20 @@
 ## Sobre o Projeto
 O Tech Challenge é o projeto da fase que englobará os conhecimentos obtidos em todas as disciplinas da fase. Esta é uma atividade que foi desenvolvida em grupo.
 O projeto consiste em um sistema simplificado e modular, com foco em segurança e comunicação assíncrona, garantindo que o sistema seja escalável, seguro, com boas práticas de autenticação, autorização e comunicação entre serviços.
-O InfoMed permite o agendamento consultas, o gerenciamento do histórico de pacientes e o envio de lembretes automáticos para garantir a presença dos pacientes nas consultas.
+O InfoMed permite o agendamento de consultas, o gerenciamento do histórico de pacientes e o envio de lembretes automáticos para garantir a presença dos pacientes nas consultas.
  
 
 ## Tecnologias Utilizadas
 - Java 21
 - Spring Boot
+- Spring Security
 - RabbitMQ
 - GraphQL
 - Maven
 - MySQL
 - Docker e Docker Compose
 - Postman
+- Swagger
 
 ## Como Configurar
 ### Pré-requisitos
@@ -33,6 +35,11 @@ O InfoMed permite o agendamento consultas, o gerenciamento do histórico de paci
 1. Acessar o diretório `InfoMed/docker`
 2. Rodar o comando `docker-compose up` (caso queira acompanhar os logs) ou `docker-compose up -d`
 3. A aplicação estará rodando na porta http://localhost:8080
+
+## Documentação da API (Swagger)
+- Após iniciar o projeto, acesse a documentação Swagger em: http://localhost:8082/swagger-ui/index.html
+- Para a visualização da documentação é necessária autenticação de usuário.
+- O controle de versionamento também pode ser visualizado pela documentação no Swagger. Para melhor entendimento, leia o exemplo: https://dzone.com/articles/versioning-rest-api-with-spring-boot-and-swagger
 
 ## Exemplos de Uso
 

@@ -7,6 +7,7 @@ import com.fiap.infomed.entities.ConsultaEntity;
 import com.fiap.infomed.entities.UsuarioEntity;
 import com.fiap.infomed.messaging.AgendamentoProducer;
 import com.fiap.infomed.repository.AgendamentoRepository;
+import com.fiap.infomed.service.exceptions.ScheduleNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -48,13 +49,13 @@ public class AgendamentoService {
 
     public AgendamentoResponseDTO findById(Long id) {
         ConsultaEntity consultaEntity = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Agendamento não encontrado com o ID: " + id));
+                .orElseThrow(() -> new ScheduleNotFoundException("Agendamento não encontrado com o ID: " + id));
         return mapToAgendamentoResponseDTO(consultaEntity);
     }
 
     public AgendamentoResponseDTO updateAgendamento(AgendamentoUpdateDTO agendamentoDTO) {
         ConsultaEntity existingAppointment = repository.findById(agendamentoDTO.id())
-                .orElseThrow(() -> new EntityNotFoundException("Agendamento não encontrado para atualização com o ID: " + agendamentoDTO.id()));
+                .orElseThrow(() -> new ScheduleNotFoundException("Agendamento não encontrado para atualização com o ID: " + agendamentoDTO.id()));
 
         existingAppointment.setStatus(agendamentoDTO.status());
         if (agendamentoDTO.observacao() != null
@@ -70,7 +71,7 @@ public class AgendamentoService {
 
     public void deleteAppointment(Long id) {
         ConsultaEntity consultaEntity = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Agendamento não encontrado para exclusão com o ID: " + id));
+                .orElseThrow(() -> new ScheduleNotFoundException("Agendamento não encontrado para exclusão com o ID: " + id));
         repository.deleteById(id);
         producer.sendAgendamentoDeleted(consultaEntity);
     }
