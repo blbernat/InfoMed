@@ -99,7 +99,7 @@ public class UsuarioService {
             throw new InvalidPasswordException("A senha atual está incorreta!");
         }
 
-        usuario.setSenha(usuarioDTO.senhaNova());
+        usuario.setSenha(passwordEncoder.encode(usuarioDTO.senhaNova()));
         usuario.setDataAtualizacao(LocalDateTime.now());
 
         usuarioRepository.save(usuario);

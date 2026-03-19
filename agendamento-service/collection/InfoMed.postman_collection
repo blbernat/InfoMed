@@ -157,10 +157,47 @@
           "response": []
         },
         {
-          "name": "New Request",
+          "name": "Alterar senha",
           "request": {
-            "method": "GET",
-            "header": []
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "lbruner",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"login\": \"lbruner\",\r\n    \"senhaAtual\": \"123456\",\r\n    \"senhaNova\": \"1234567\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/usuarios/senha",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "usuarios",
+                "senha"
+              ]
+            }
           },
           "response": []
         }
