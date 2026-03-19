@@ -7,7 +7,9 @@ import com.fiap.infomed.dto.UsuarioUpdateSenhaDTO;
 import com.fiap.infomed.entities.ETipoUsuario;
 import com.fiap.infomed.entities.UsuarioEntity;
 import com.fiap.infomed.repository.UsuarioRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.fiap.infomed.service.exceptions.CreateUserException;
+import com.fiap.infomed.service.exceptions.InvalidPasswordException;
+import com.fiap.infomed.service.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -90,7 +92,7 @@ class UsuarioServiceTest {
         when(usuarioRepository.findByLogin("teste")).thenReturn(Optional.of(usuarioEntity));
         when(usuarioRepository.findByEmail("atualizado@infomed.com")).thenReturn(Optional.of(otherUser));
 
-        assertThrows(IllegalArgumentException.class, () -> usuarioService.updateUsuario(updateDTO));
+        assertThrows(CreateUserException.class, () -> usuarioService.updateUsuario(updateDTO));
 
         verify(usuarioRepository, times(1)).findByLogin("teste");
         verify(usuarioRepository, times(1)).findByEmail("atualizado@infomed.com");
@@ -126,7 +128,7 @@ class UsuarioServiceTest {
         when(usuarioRepository.findByLogin("teste")).thenReturn(Optional.of(usuarioEntity));
         when(passwordEncoder.matches("wrongPassword", "encodedPassword")).thenReturn(false);
 
-        assertThrows(IllegalArgumentException.class, () -> usuarioService.updateSenhaUsuario(new UsuarioUpdateSenhaDTO("teste", "wrongPassword", "newPassword")));
+        assertThrows(InvalidPasswordException.class, () -> usuarioService.updateSenhaUsuario(new UsuarioUpdateSenhaDTO("teste", "wrongPassword", "newPassword")));
 
         verify(usuarioRepository, times(1)).findByLogin("teste");
         verify(passwordEncoder, times(1)).matches("wrongPassword", "encodedPassword");
@@ -163,7 +165,7 @@ class UsuarioServiceTest {
     void testFindUsuarioById_NotFound() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> usuarioService.findUsuarioById(1L));
+        assertThrows(UserNotFoundException.class, () -> usuarioService.findUsuarioById(1L));
 
         verify(usuarioRepository, times(1)).findById(1L);
     }

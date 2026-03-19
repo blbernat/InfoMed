@@ -6,7 +6,9 @@ import com.fiap.infomed.dto.UsuarioUpdateDTO;
 import com.fiap.infomed.dto.UsuarioUpdateSenhaDTO;
 import com.fiap.infomed.entities.UsuarioEntity;
 import com.fiap.infomed.repository.UsuarioRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.fiap.infomed.service.exceptions.CreateUserException;
+import com.fiap.infomed.service.exceptions.InvalidPasswordException;
+import com.fiap.infomed.service.exceptions.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,20 @@ public class UsuarioService {
     }
 
     public void saveUsuario(UsuarioCreateDTO usuarioDTO) {
+        usuarioRepository.findByLogin(usuarioDTO.login())
+                .ifPresent(u -> {
+                    throw new CreateUserException("Esse login já está sendo utilizado por outro usuário.");
+                });
+
+        usuarioRepository.findByEmail(usuarioDTO.email())
+                .ifPresent(u -> {
+                    throw new CreateUserException("Esse e-mail já está sendo utilizado por outro usuário.");
+                });
+
+        usuarioRepository.findByCpf(usuarioDTO.cpf())
+                .ifPresent(u -> {
+                    throw new CreateUserException("Esse CPF já está sendo utilizado por outro usuário.");
+                });
         UsuarioEntity usuario = new UsuarioEntity();
 
         usuario.setNome(usuarioDTO.nome());
@@ -42,12 +58,18 @@ public class UsuarioService {
     public void updateUsuario(UsuarioUpdateDTO usuarioDTO) {
         UsuarioEntity usuario = usuarioRepository.findByLogin(usuarioDTO.login())
                 .orElseThrow(() ->
-                        new EntityNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!"));
+                        new UserNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!"));
 
         usuarioRepository.findByEmail(usuarioDTO.email())
                 .filter(u -> !usuarioDTO.login().equals(u.getLogin()))
                 .ifPresent(u -> {
-                    throw new IllegalArgumentException("Esse e-mail já está sendo utilizado por outro usuário.");
+                    throw new CreateUserException("Esse e-mail já está sendo utilizado por outro usuário.");
+                });
+
+        usuarioRepository.findByCpf(usuarioDTO.cpf())
+                .filter(u -> !usuarioDTO.login().equals(u.getLogin()))
+                .ifPresent(u -> {
+                    throw new CreateUserException("Esse CPF já está sendo utilizado por outro usuário.");
                 });
 
         usuario.setNome(usuarioDTO.nome());
@@ -63,18 +85,18 @@ public class UsuarioService {
     public void deleteUsuario(String login) {
         UsuarioEntity usuarioDelete = usuarioRepository.findByLogin(login)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("Usuário não encontrado!"));
+                        new UserNotFoundException("Usuário não encontrado!"));
         usuarioRepository.delete(usuarioDelete);
     }
 
     public void updateSenhaUsuario(UsuarioUpdateSenhaDTO usuarioDTO) {
         UsuarioEntity usuario = usuarioRepository.findByLogin(usuarioDTO.login())
                 .orElseThrow(() ->
-                        new EntityNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!"));
+                        new UserNotFoundException("Usuário não encontrado para a ação solicitada! O cadastro não pode ser alterado!"));
 
         boolean senhaValida = passwordEncoder.matches(usuarioDTO.senhaAtual(), usuario.getSenha());
         if (!senhaValida) {
-            throw new IllegalArgumentException("A senha atual está incorreta!");
+            throw new InvalidPasswordException("A senha atual está incorreta!");
         }
 
         usuario.setSenha(usuarioDTO.senhaNova());
@@ -93,7 +115,7 @@ public class UsuarioService {
 
     public UsuarioEntity findUsuarioById(Long id) {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado!"));
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado!"));
     }
 
     private UsuarioResponseDTO mapToDomainUsuario(UsuarioEntity usuario){

@@ -8,7 +8,7 @@ import com.fiap.infomed.entities.EStatusConsulta;
 import com.fiap.infomed.entities.UsuarioEntity;
 import com.fiap.infomed.messaging.AgendamentoProducer;
 import com.fiap.infomed.repository.AgendamentoRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.fiap.infomed.service.exceptions.ScheduleNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -107,7 +107,7 @@ class AgendamentoServiceTest {
     @Test
     void testFindById_NotFound() {
         when(repository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> agendamentoService.findById(1L));
+        assertThrows(ScheduleNotFoundException.class, () -> agendamentoService.findById(1L));
         verify(repository, times(1)).findById(1L);
     }
 
