@@ -1,23 +1,51 @@
+"""
+Define os pontos de entrada da API: Query para leitura e Mutation para escrita.
+"""
 schema {
     query: Query
     mutation: Mutation
 }
 
+"""
+Contém todas as consultas (operações de leitura) disponíveis na API.
+"""
 type Query {
+    "Busca todos os agendamentos de um paciente."
     patientAppointments(patientId: ID!): [Consulta]
+
+    "Busca os agendamentos futuros de um paciente."
     futureAppointments(patientId: ID!): [Consulta]
+
+    "Busca o histórico médico de um paciente."
     patientHistory(patientId: ID!): [Historico]
+
+    "Busca todos os agendamentos de um médico."
     findByMedicoId(medicoId: ID!): [Consulta]
+
+    "Busca um agendamento específico pelo seu ID."
     findById(consultaId: ID!): Consulta
 }
 
+"""
+Contém todas as mutações (operações de escrita) disponíveis na API.
+"""
 type Mutation {
+    "Cria um novo agendamento."
     createAppointment(agendamentoCreateDTO: AgendamentoCreateInput!): Consulta
+
+    "Atualiza um agendamento existente."
     updateAppointment(agendamentoUpdateDTO: AgendamentoUpdateInput!): Consulta
+
+    "Deleta um agendamento pelo seu ID."
     deleteAppointment(id: ID!): Boolean
+
+    "Atualiza o histórico de um paciente."
     updatePatientHistory(historicoUpdateDTO: HistoricoUpdateInput!): Historico
 }
 
+"""
+Input para a criação de um novo agendamento.
+"""
 input AgendamentoCreateInput {
     pacienteId: ID!
     medicoId: ID!
@@ -26,6 +54,9 @@ input AgendamentoCreateInput {
     status: String!
 }
 
+"""
+Input para a atualização de um agendamento existente.
+"""
 input AgendamentoUpdateInput {
     id: ID!
     dataConsulta: String!
@@ -33,6 +64,9 @@ input AgendamentoUpdateInput {
     status: String!
 }
 
+"""
+Input para a atualização do histórico de um paciente.
+"""
 input HistoricoUpdateInput {
     id: ID!
     diagnostico: String
@@ -41,6 +75,9 @@ input HistoricoUpdateInput {
     dataAtualizacao: String
 }
 
+"""
+Representa um agendamento de consulta.
+"""
 type Consulta {
     id: ID!
     status: String!
@@ -50,6 +87,9 @@ type Consulta {
     medico: Usuario!
 }
 
+"""
+Representa o histórico médico de um paciente.
+"""
 type Historico {
     id: ID!
     diagnostico: String
@@ -59,6 +99,9 @@ type Historico {
     medico: Usuario!
 }
 
+"""
+Representa um usuário do sistema.
+"""
 type Usuario {
     id: ID!
     nome: String!
@@ -68,6 +111,9 @@ type Usuario {
     tipoUsuario: TipoUsuario!
 }
 
+"""
+Enum para os tipos de usuário.
+"""
 enum TipoUsuario{
     MEDICO
     ENFERMEIRO
