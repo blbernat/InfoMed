@@ -14,7 +14,7 @@ services:
       - mysql_data:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD", "mysql", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD", "-e", "use notificacao"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD" ]
       interval: 5s
       timeout: 3s
       retries: 20
