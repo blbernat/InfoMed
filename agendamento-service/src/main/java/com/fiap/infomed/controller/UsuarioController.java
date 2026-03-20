@@ -25,7 +25,8 @@ public class UsuarioController {
 
     @Operation(
             summary = "Busca de usuários",
-            description = "Busca todos os usuários cadastrados. Exemplo: http://localhost:8082/api/usuarios",
+            description = "Busca todos os usuários cadastrados. " +
+                    "Exemplo: http://localhost:8082/api/usuarios",
             responses = {
                     @ApiResponse(description =  "Ok", responseCode = "200"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
@@ -37,7 +38,10 @@ public class UsuarioController {
 
     @Operation(
             summary = "Criação de um novo usuário",
-            description = "Criação de novo usuário, onde são feitas as validações das regras de negócio e salva o novo usuário. Deve-se informar um JSON com as informações do usuário. Exemplo: http://localhost:8082/api/usuarios",
+            description = "Criação de novo usuário, onde são feitas as validações das regras de negócio e salva o novo usuário. " +
+                    "Deve-se informar um JSON com as informações do usuário. " +
+                    "Importante: O CPF deve ser válido e o e-mail deve ter o formato correto. " +
+                    "Exemplo: http://localhost:8082/api/usuarios",
             responses = {
                     @ApiResponse(description = "Created", responseCode = "201"),
                     @ApiResponse(description = "Conflict", responseCode = "409"),
@@ -52,6 +56,7 @@ public class UsuarioController {
             summary = "Alteração de informações do usuário",
             description = "Alteração de informações do usuário, onde são feitas as validações das regras dos campos e atualiza as informações do usuário. " +
                     "Deve-se informar um JSON com as informações do usuário. O login do usuário é a única informação que não pode ser alterada. " +
+                    "Importante: O CPF deve ser válido e o e-mail deve ter o formato correto. " +
                     "Exemplo: http://localhost:8082/api/usuarios",
             responses = {
                     @ApiResponse(description = "Ok", responseCode = "200"),
@@ -64,7 +69,8 @@ public class UsuarioController {
 
     @Operation(
             summary = "Exclusão de usuário",
-            description = "Exclusão de usuário. Deve-se informar o login do usuário que será excluído. Exemplo: http://localhost:8082/api/usuarios/NOME_LOGIN",
+            description = "Exclusão de usuário. Deve-se informar o login do usuário que será excluído. " +
+                    "Exemplo: http://localhost:8082/api/usuarios/NOME_LOGIN",
             responses = {
                     @ApiResponse(description = "Ok", responseCode = "200"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
@@ -76,7 +82,9 @@ public class UsuarioController {
 
     @Operation(
             summary = "Alteração da senha do usuário",
-            description = "Alteração da senha do usuário. Deve-se informar um JSON com as informações do usuário, senha atual e a nova senha. A senha não pode ser vazia ou possuir apenas espaços. A data de alteração será atualizada automaticamente com a data atual do sistema. Exemplo: http://localhost:8082/api/usuarios/senha",
+            description = "Alteração da senha do usuário. Deve-se informar um JSON com as informações do usuário, senha atual e a nova senha. " +
+                    "A senha não pode ser vazia ou possuir apenas espaços. A data de alteração será atualizada automaticamente com a data atual do sistema. " +
+                    "Exemplo: http://localhost:8082/api/usuarios/senha",
             responses = {
                     @ApiResponse(description = "Ok", responseCode = "200"),
                     @ApiResponse(description = "Not found", responseCode = "404")})

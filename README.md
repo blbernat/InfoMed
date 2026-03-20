@@ -38,7 +38,6 @@ O InfoMed permite o agendamento de consultas, o gerenciamento do histórico de p
 
 ## Documentação da API (Swagger)
 - Após iniciar o projeto, acesse a documentação Swagger em: http://localhost:8082/swagger-ui/index.html
-- Para a visualização da documentação é necessária autenticação de usuário.
 - O controle de versionamento também pode ser visualizado pela documentação no Swagger. Para melhor entendimento, leia o exemplo: https://dzone.com/articles/versioning-rest-api-with-spring-boot-and-swagger
 
 ## Exemplos de Uso
