@@ -29,6 +29,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
                         .requestMatchers("/api/agendamento/**").hasAnyRole("MEDICO", "ENFERMEIRO")
                         .requestMatchers("/graphql/**").authenticated()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(org.springframework.security.config.Customizer.withDefaults());
